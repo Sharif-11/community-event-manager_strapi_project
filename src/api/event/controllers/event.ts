@@ -4,6 +4,7 @@
 
 import { factories } from '@strapi/strapi'
 const attend = async ctx => {
+  console.log(ctx)
   const eventId = ctx.params.id
   const userId = ctx.state.user.id
 
