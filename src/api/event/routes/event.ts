@@ -2,40 +2,9 @@
  * event router
  */
 
-import { factories } from '@strapi/strapi'
-
 module.exports = {
   routes: [
-    // ... other routes like find, findOne ...
-    {
-      method: 'PUT',
-      path: '/events/:id',
-      handler: 'event.update',
-      config: {
-        policies: ['global::is-event-owner'], // Only event owners can update events
-      },
-    },
-    // delete event route with is-event-owner policy
-    {
-      method: 'DELETE',
-      path: '/events/:id',
-      handler: 'event.deleteEvent',
-      config: {
-        policies: ['global::is-event-owner'], // Only event owners can delete events
-      },
-    },
-    // attend event route without any policy
-
-    {
-      method: 'POST',
-      path: '/events/:id/attend',
-      handler: 'event.attend',
-      config: {
-        policies: [
-          'global::check-attendance', // Ensure user is authenticated
-        ], // No policy, any authenticated user can attend
-      },
-    },
+    // Core routes
     {
       method: 'GET',
       path: '/events',
@@ -44,7 +13,46 @@ module.exports = {
         policies: [],
       },
     },
+    {
+      method: 'GET',
+      path: '/events/:id',
+      handler: 'event.findOne',
+      config: {
+        policies: [],
+      },
+    },
+    {
+      method: 'POST',
+      path: '/events',
+      handler: 'event.create',
+      config: {
+        policies: [], // Or whatever policy you want for creation
+      },
+    },
+    // Custom routes
+    {
+      method: 'PUT',
+      path: '/events/:id',
+      handler: 'event.update',
+      config: {
+        policies: ['global::is-event-owner'],
+      },
+    },
+    {
+      method: 'DELETE',
+      path: '/events/:id',
+      handler: 'event.deleteEvent',
+      config: {
+        policies: ['global::is-event-owner'],
+      },
+    },
+    {
+      method: 'POST',
+      path: '/events/:id/attend',
+      handler: 'event.attend',
+      config: {
+        policies: ['global::check-attendance'],
+      },
+    },
   ],
 }
-
-export default factories.createCoreRouter('api::event.event')
