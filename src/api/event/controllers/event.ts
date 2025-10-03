@@ -28,7 +28,21 @@ const find = async ctx => {
   })
   ctx.send(events)
 }
+const update = async ctx => {
+  const updateBody = ctx.request.body
+  const eventId = ctx.params.id
+  const updatedEvent = await strapi.entityService.update('api::event.event', eventId, {
+    data: updateBody,
+    populate: { organizer: true, attendees: true },
+  })
+  ctx.send(updatedEvent)
+}
+const deleteEvent = async ctx => {
+  const eventId = ctx.params.id
+  await strapi.entityService.delete('api::event.event', eventId)
+  ctx.send({ message: 'Event deleted successfully' })
+}
 
-module.exports = { attend, find }
+module.exports = { attend, find, update, deleteEvent }
 
 export default factories.createCoreController('api::event.event')

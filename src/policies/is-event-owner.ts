@@ -1,4 +1,5 @@
 module.exports = async (policyContext, config, { strapi }) => {
+  console.log('Running is-event-owner policy')
   const eventId = policyContext.params.id
   const currentUserId = policyContext.state.user.id
 
